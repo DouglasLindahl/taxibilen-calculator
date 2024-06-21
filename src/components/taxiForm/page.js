@@ -1,6 +1,66 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import styled from "styled-components";
+
+const FormContainer = styled.div`
+  width: 70%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #303030;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #101010;
+`;
+
+const Title = styled.h1`
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
+const FormGroup = styled.div`
+  margin-bottom: 15px;
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+`;
+
+const Button = styled.button`
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  margin-top: 10px;
+`;
+
+const SuccessMessage = styled.div`
+  color: green;
+  margin-top: 10px;
+`;
 
 const TaxiForm = () => {
   const [pickup, setPickup] = useState("");
@@ -84,28 +144,30 @@ const TaxiForm = () => {
   };
 
   return (
-    <div>
-      <h1>Taxi Fare Calculator</h1>
-      <div>
+    <FormContainer>
+      <Title>Taxi Fare Calculator</Title>
+      <FormGroup>
         <label>Pickup Address:</label>
         <input
           type="text"
           value={pickup}
           onChange={(e) => setPickup(e.target.value)}
+          placeholder="Enter pickup address"
         />
-      </div>
-      <div>
+      </FormGroup>
+      <FormGroup>
         <label>Dropoff Address:</label>
         <input
           type="text"
           value={dropoff}
           onChange={(e) => setDropoff(e.target.value)}
+          placeholder="Enter dropoff address"
         />
-      </div>
-      <button onClick={calculatePrice}>Calculate Fare</button>
-      {price && <div>Total Fare: {price} SEK</div>}
-      {error && <div>{error}</div>}
-    </div>
+      </FormGroup>
+      <Button onClick={calculatePrice}>Calculate Fare</Button>
+      {price && <SuccessMessage>Total Fare: {price} SEK</SuccessMessage>}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+    </FormContainer>
   );
 };
 
