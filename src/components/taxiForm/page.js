@@ -4,7 +4,7 @@ import axios from "axios";
 import styled from "styled-components";
 
 const FormContainer = styled.div`
-  max-width: 400px;
+  width: 70%;
   margin: 0 auto;
   padding: 20px;
   background-color: #f0f0f0;
@@ -144,7 +144,7 @@ const TaxiForm = () => {
 
   return (
     <FormContainer>
-      <Title>Taxi Fare Calculator</Title>
+      <Title>TaxiBilen Automatic</Title>
       <FormGroup>
         <label>Pickup Address:</label>
         <input
