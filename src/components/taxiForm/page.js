@@ -1,16 +1,15 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 
 const FormContainer = styled.div`
-  width: 70%;
+  max-width: 400px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #303030;
-  color: white;
+  background-color: #f0f0f0;
   border-radius: 8px;
-  box-shadow: 0 0 10px #101010;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
 const Title = styled.h1`
@@ -20,7 +19,6 @@ const Title = styled.h1`
 
 const FormGroup = styled.div`
   margin-bottom: 15px;
-  position: relative;
 
   label {
     display: block;
@@ -35,29 +33,6 @@ const FormGroup = styled.div`
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-  }
-`;
-
-const SuggestionsList = styled.ul`
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  width: 100%;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  max-height: 150px;
-  overflow-y: auto;
-  z-index: 1000;
-
-  li {
-    padding: 8px;
-    cursor: pointer;
-    color: black;
-    &:hover {
-      background-color: #f0f0f0;
-    }
   }
 `;
 
@@ -89,43 +64,8 @@ const SuccessMessage = styled.div`
 const TaxiForm = () => {
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
-  const [pickupSuggestions, setPickupSuggestions] = useState([]);
-  const [dropoffSuggestions, setDropoffSuggestions] = useState([]);
-  const [showPickupSuggestions, setShowPickupSuggestions] = useState(false);
-  const [showDropoffSuggestions, setShowDropoffSuggestions] = useState(false);
   const [price, setPrice] = useState(null);
   const [error, setError] = useState(null);
-
-  const fetchSuggestions = async (query, setSuggestions) => {
-    if (query.length < 3) {
-      setSuggestions([]);
-      return;
-    }
-
-    try {
-      const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          query
-        )}`
-      );
-      setSuggestions(response.data);
-    } catch (err) {
-      console.error("Error fetching suggestions:", err);
-    }
-  };
-
-  useEffect(() => {
-    fetchSuggestions(pickup, setPickupSuggestions);
-  }, [pickup]);
-
-  useEffect(() => {
-    fetchSuggestions(dropoff, setDropoffSuggestions);
-  }, [dropoff]);
-
-  const handleSuggestionClick = (suggestion, setInput, setSuggestions) => {
-    setInput(suggestion.display_name);
-    setSuggestions([]);
-  };
 
   const getCoordinates = async (address) => {
     try {
@@ -134,10 +74,17 @@ const TaxiForm = () => {
           address
         )}`
       );
-      const { lat, lon, type } = response.data.find(
-        (result) => result.type !== "unclassified"
-      );
-      return { lat: parseFloat(lat), lon: parseFloat(lon) };
+      console.log(response);
+      let index = 0;
+      while (index < response.data.length) {
+        const { lat, lon, type } = response.data[index];
+        if (type !== "unclassified") {
+          return { lat: parseFloat(lat), lon: parseFloat(lon) };
+        }
+        index++;
+      }
+
+      throw new Error("Address not found");
     } catch (err) {
       throw new Error("Error fetching coordinates");
     }
@@ -204,28 +151,8 @@ const TaxiForm = () => {
           type="text"
           value={pickup}
           onChange={(e) => setPickup(e.target.value)}
-          onFocus={() => setShowPickupSuggestions(true)}
-          onBlur={() => setTimeout(() => setShowPickupSuggestions(false), 200)}
           placeholder="Enter pickup address"
         />
-        {showPickupSuggestions && pickupSuggestions.length > 0 && (
-          <SuggestionsList>
-            {pickupSuggestions.map((suggestion, index) => (
-              <li
-                key={index}
-                onMouseDown={() =>
-                  handleSuggestionClick(
-                    suggestion,
-                    setPickup,
-                    setPickupSuggestions
-                  )
-                }
-              >
-                {suggestion.display_name}
-              </li>
-            ))}
-          </SuggestionsList>
-        )}
       </FormGroup>
       <FormGroup>
         <label>Dropoff Address:</label>
@@ -233,28 +160,8 @@ const TaxiForm = () => {
           type="text"
           value={dropoff}
           onChange={(e) => setDropoff(e.target.value)}
-          onFocus={() => setShowDropoffSuggestions(true)}
-          onBlur={() => setTimeout(() => setShowDropoffSuggestions(false), 200)}
           placeholder="Enter dropoff address"
         />
-        {showDropoffSuggestions && dropoffSuggestions.length > 0 && (
-          <SuggestionsList>
-            {dropoffSuggestions.map((suggestion, index) => (
-              <li
-                key={index}
-                onMouseDown={() =>
-                  handleSuggestionClick(
-                    suggestion,
-                    setDropoff,
-                    setDropoffSuggestions
-                  )
-                }
-              >
-                {suggestion.display_name}
-              </li>
-            ))}
-          </SuggestionsList>
-        )}
       </FormGroup>
       <Button onClick={calculatePrice}>Calculate Fare</Button>
       {price && <SuccessMessage>Total Fare: {price} SEK</SuccessMessage>}
