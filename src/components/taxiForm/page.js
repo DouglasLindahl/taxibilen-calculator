@@ -205,7 +205,7 @@ const TaxiForm = () => {
           value={pickup}
           onChange={(e) => setPickup(e.target.value)}
           onFocus={() => setShowPickupSuggestions(true)}
-          onBlur={() => setShowPickupSuggestions(false)}
+          onBlur={() => setTimeout(() => setShowPickupSuggestions(false), 200)}
           placeholder="Enter pickup address"
         />
         {showPickupSuggestions && pickupSuggestions.length > 0 && (
@@ -234,7 +234,7 @@ const TaxiForm = () => {
           value={dropoff}
           onChange={(e) => setDropoff(e.target.value)}
           onFocus={() => setShowDropoffSuggestions(true)}
-          onBlur={() => setShowDropoffSuggestions(false)}
+          onBlur={() => setTimeout(() => setShowDropoffSuggestions(false), 200)}
           placeholder="Enter dropoff address"
         />
         {showDropoffSuggestions && dropoffSuggestions.length > 0 && (
