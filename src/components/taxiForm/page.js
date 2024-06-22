@@ -164,7 +164,7 @@ const TaxiForm = () => {
       const dropoffCoords = await getCoordinates(dropoff);
 
       const response = await axios.get(
-        `http://router.project-osrm.org/route/v1/driving/${pickupCoords.lon},${pickupCoords.lat};${dropoffCoords.lon},${dropoffCoords.lat}?overview=false`
+        `https://router.project-osrm.org/route/v1/driving/${pickupCoords.lon},${pickupCoords.lat};${dropoffCoords.lon},${dropoffCoords.lat}?overview=false`
       );
 
       const data = response.data;
