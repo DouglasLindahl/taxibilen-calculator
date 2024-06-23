@@ -94,7 +94,7 @@ export default function CalculateForm({ isWeekend }) {
 
   return (
     <FormContainer>
-      <Title>TaxiBilen Manual</Title>
+      <Title>Manual</Title>
       <FormGroup>
         <label>Distance</label>
         <input
