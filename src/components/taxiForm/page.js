@@ -146,7 +146,7 @@ const TaxiForm = ({ isWeekend }) => {
 
   return (
     <FormContainer>
-      <Title>Automatic</Title>
+      <Title>Automatisk</Title>
       <FormGroup>
         <label>Pickup Address:</label>
         <input

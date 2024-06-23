@@ -49,22 +49,28 @@ export default function Home() {
     <main className={styles.main}>
       <ButtonGroup>
         <ToggleButton
-          active={isManual}
           isLeft
-          onClick={() => setIsManual(true)}
+          active={!isManual}
+          onClick={() => setIsManual(false)}
         >
-          Manual
+          Automatisk
         </ToggleButton>
-        <ToggleButton active={!isManual} onClick={() => setIsManual(false)}>
-          Automatic
+        <ToggleButton active={isManual} onClick={() => setIsManual(true)}>
+          Manuell
         </ToggleButton>
       </ButtonGroup>
-      <WeekendButton
-        active={isWeekend}
-        onClick={() => setIsWeekend(!isWeekend)}
-      >
-        Weekend Rates
-      </WeekendButton>
+      <ButtonGroup>
+        <ToggleButton
+          isLeft
+          active={!isWeekend}
+          onClick={() => setIsWeekend(false)}
+        >
+          Mon - Fre
+        </ToggleButton>
+        <ToggleButton active={isWeekend} onClick={() => setIsWeekend(true)}>
+          Övrig Tid
+        </ToggleButton>
+      </ButtonGroup>
       {isManual ? (
         <CalculateForm isWeekend={isWeekend} />
       ) : (
