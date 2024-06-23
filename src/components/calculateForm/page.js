@@ -63,12 +63,17 @@ export default function CalculateForm({ isWeekend }) {
 
   const calculateFare = () => {
     const distanceNum = parseFloat(distance);
-    const timeNum = parseFloat(time);
+    let timeNum = parseFloat(time);
 
     if (isNaN(distanceNum) || isNaN(timeNum)) {
       setError("Please enter valid numbers for distance and time.");
       setPrice(null);
       return;
+    }
+
+    // Add 20% to time if it exceeds 30 minutes
+    if (timeNum > 30) {
+      timeNum *= 1.2;
     }
 
     // Round time up to nearest 5 minutes

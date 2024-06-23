@@ -42,8 +42,8 @@ const WeekendButton = styled.button`
 `;
 
 export default function Home() {
-  const [isManual, setIsManual] = useState(true);
-  const [isWeekend, setIsWeekend] = useState(false);
+  const [isManual, setIsManual] = useState(false);
+  const [isWeekend, setIsWeekend] = useState(true);
 
   return (
     <main className={styles.main}>
