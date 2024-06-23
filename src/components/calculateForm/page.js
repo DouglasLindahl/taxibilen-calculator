@@ -51,8 +51,9 @@ const ErrorMessage = styled.div`
 `;
 
 const SuccessMessage = styled.div`
-  color: green;
+  color: #ffe500;
   margin-top: 10px;
+  font-size: 64px;
 `;
 
 export default function CalculateForm({ isWeekend }) {
@@ -119,9 +120,7 @@ export default function CalculateForm({ isWeekend }) {
         />
       </FormGroup>
       <Button onClick={calculateFare}>Calculate Fare</Button>
-      {price !== null && (
-        <SuccessMessage>Total Fare: {price} SEK</SuccessMessage>
-      )}
+      {price !== null && <SuccessMessage>{price}:-</SuccessMessage>}
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </FormContainer>
   );

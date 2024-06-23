@@ -52,8 +52,9 @@ const ErrorMessage = styled.div`
 `;
 
 const SuccessMessage = styled.div`
-  color: green;
+  color: #ffe500;
   margin-top: 10px;
+  font-size: 64px;
 `;
 
 const TaxiForm = ({ isWeekend }) => {
@@ -135,7 +136,7 @@ const TaxiForm = ({ isWeekend }) => {
         let totalFare = baseFare + distanceFare + timeFare;
         totalFare = roundToNearestFiveSEK(totalFare);
 
-        setPrice(totalFare.toFixed(2));
+        setPrice(totalFare.toFixed(0));
       } else {
         setError("Unable to calculate the route.");
       }
@@ -166,7 +167,7 @@ const TaxiForm = ({ isWeekend }) => {
         />
       </FormGroup>
       <Button onClick={calculatePrice}>Calculate Fare</Button>
-      {price && <SuccessMessage>Total Fare: {price} SEK</SuccessMessage>}
+      {price && <SuccessMessage>{price}:-</SuccessMessage>}
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </FormContainer>
   );
