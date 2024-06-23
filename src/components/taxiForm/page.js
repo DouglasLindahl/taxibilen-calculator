@@ -6,10 +6,9 @@ import styled from "styled-components";
 const FormContainer = styled.div`
   width: 70%;
   margin: 0 auto;
-  padding: 20px;
-  background-color: #f0f0f0;
+  background-color: #151515;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: white;
 `;
 
 const Title = styled.h1`
@@ -39,16 +38,12 @@ const FormGroup = styled.div`
 const Button = styled.button`
   width: 100%;
   padding: 10px;
-  background-color: #007bff;
-  color: white;
+  background-color: #ffe500;
+  color: black;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-
-  &:hover {
-    background-color: #0056b3;
-  }
 `;
 
 const ErrorMessage = styled.div`
@@ -61,7 +56,7 @@ const SuccessMessage = styled.div`
   margin-top: 10px;
 `;
 
-const TaxiForm = () => {
+const TaxiForm = ({ isWeekend }) => {
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
   const [price, setPrice] = useState(null);
@@ -126,9 +121,16 @@ const TaxiForm = () => {
         duration = roundToNearestFiveMinutes(duration);
 
         // Pricing logic: base fare + distance-based fare + time-based fare
-        const baseFare = 75; // base fare in SEK
+        let baseFare, timeFare;
+        if (isWeekend) {
+          baseFare = 111; // weekend base fare in SEK
+          timeFare = (duration / 3600) * 700; // weekend per hour fare in SEK
+        } else {
+          baseFare = 75; // weekday base fare in SEK
+          timeFare = (duration / 3600) * 400; // weekday per hour fare in SEK
+        }
+
         const distanceFare = (distance / 1000) * 19.75; // per km fare in SEK
-        const timeFare = (duration / 3600) * 400; // per hour fare in SEK
 
         let totalFare = baseFare + distanceFare + timeFare;
         totalFare = roundToNearestFiveSEK(totalFare);
